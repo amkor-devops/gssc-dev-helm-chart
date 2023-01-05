@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "gssc-hris-api.fullname" . }}
+  name: {{ include "api.fullname" . }}
   labels:
-    {{- include "gssc-hris-api.labels" . | nindent 4 }}
+    {{- include "api.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "gssc-hris-api.selectorLabels" . | nindent 6 }}
+      {{- include "api.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "gssc-hris-api.selectorLabels" . | nindent 8 }}
+        {{- include "api.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "gssc-hris-api.serviceAccountName" . }}
+      serviceAccountName: {{ include "api.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -46,26 +46,10 @@ spec:
                   - "-c"
                   - |
                     composer update && php artisan passport:install
-
-
-
-
           volumeMounts:
             - mountPath: /var/www/html
               name: gssc-hris-dev
               subPath: app/api/
-                #livenessProbe:
-                #httpGet:
-                #path: /
-                #port: http
-                #readinessProbe:
-                # exec:
-                #command: ["/bin/sh", "-c",  "composer", "update", "--no-scripts", "--no-interaction"]
-                #initialDelaySeconds: 30
-                #periodSeconds: 2
-                #timeoutSeconds: 1
-                #successThreshold: 3
-                #failureThreshold: 10
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
