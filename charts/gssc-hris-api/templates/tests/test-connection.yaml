@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "gssc-hris-api.fullname" . }}-test-connection"
+  labels:
+    {{- include "gssc-hris-api.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "gssc-hris-api.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
