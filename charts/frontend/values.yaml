@@ -7,12 +7,12 @@ replicaCount: 1
 hostname: frontend
 
 image:
-  repository: amkormtags001/hris-frontend
+  repository: 000079017876.dkr.ecr.ap-southeast-1.amazonaws.com/hris-frontend
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest-dev"
+  tag: ""
 
-imagePullSecrets: []
+imagePullSecrets: [name: ecr-cred]
 nameOverride: ""
 fullnameOverride: ""
 

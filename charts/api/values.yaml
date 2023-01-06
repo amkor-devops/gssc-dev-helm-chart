@@ -1,12 +1,12 @@
 replicaCount: 1
 
 image:
-  repository: amkormtags001/hris-api
+  repository: 000079017876.dkr.ecr.ap-southeast-1.amazonaws.com/hris-api
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
-imagePullSecrets: []
+imagePullSecrets: [name: ecr-cred]
 nameOverride: ""
 fullnameOverride: ""
 
